@@ -1,0 +1,10 @@
+//==============================================================
+// SHOP
+//==============================================================
+//SLOTS X = 0~7 , Y = 0~14 , * = Orden original
+//Index	Level	Dur	Skill	Luck	Option	ExcOp	SlotX	SlotY	Comment
+13 2 0 -1 0 0 0 0 6 0 // Horn of Uniria
+13 1 0 -1 0 0 0 0 6 1 // Imp
+13 0 0 -1 0 0 0 0 7 1 // Guardian Angel
+13 3 0 -1 0 0 0 0 7 0 // Horn of Dinorant
+end
