@@ -25,17 +25,13 @@ function Replace-Count([string]$path, [string]$old, [string]$new, [int]$expect) 
     [IO.File]::WriteAllText($path, $text.Replace($old, $new), $utf8)
 }
 
-Replace-Once $js @"
-  var _emscripten_glTexImage2D = (target, level, internalFormat, width, height, border, format, type, pixels) => {
-"@ @"
-  var muGlFormat = (fmt) => {
-      if (fmt == 4) return 0x1908;
-      return fmt;
-    };
-  var _emscripten_glTexImage2D = (target, level, internalFormat, width, height, border, format, type, pixels) => {
-      internalFormat = muGlFormat(internalFormat);
-      format = muGlFormat(format);
-"@
+$jsContent = [IO.File]::ReadAllText($js)
+$texImagePattern = '(?m)^(\s*var _emscripten_glTexImage2D\s*=\s*\(target,\s*level,\s*internalFormat,\s*width,\s*height,\s*border,\s*format,\s*type,\s*pixels\)\s*=>\s*\{)\s*$'
+$texImageMatches = [regex]::Matches($jsContent, $texImagePattern)
+if ($texImageMatches.Count -ne 1) { throw "expected 1 glTexImage2D function signature, found $($texImageMatches.Count)" }
+$texImageReplacement = [System.Text.RegularExpressions.MatchEvaluator]{ param($m) $m.Groups[1].Value + "`n      var muGlFormat = (fmt) => {`n        if (fmt == 4) return 0x1908;`n        return fmt;`n      };`n      internalFormat = muGlFormat(internalFormat);`n      format = muGlFormat(format);" }
+$jsContent = [regex]::Replace($jsContent, $texImagePattern, $texImageReplacement)
+[IO.File]::WriteAllText($js, $jsContent, (New-Object System.Text.UTF8Encoding $false))
 
 
 Replace-Once $js "      GLImmediate.mode = mode;`n      GLImmediate.vertexCounter = 0;" @"
