@@ -4,7 +4,7 @@
  * ============================================================================
  */
 
-const BUILD_VERSION = window.BUILD_VERSION = 'login104';
+const BUILD_VERSION = window.BUILD_VERSION = 'login105';
 
 // ── 1. Virtual Touch Controls & On-Screen Keyboard ──────────────────────────
 
@@ -423,7 +423,21 @@ window.muInstallAudio = function () {
   } else if (msg.type === 'PLAYER_CONNECTED') {
   console.log('[SoloBridge] Player connected to GameServer session:', msg.playerIndex);
   var deckConnection = document.getElementById('muDeckConnection');
-  if (deckConnection) deckConnection.textContent = 'Game session connected · character data remains server-authoritative';
+  if (deckConnection) deckConnection.textContent = 'Game session connected · reading character state';
+  } else if (msg.type === 'PLAYER_SNAPSHOT') {
+  var snapshot = msg.snapshot;
+  var snapshotConnection = document.getElementById('muDeckConnection');
+  var character = document.getElementById('muDeckCharacter');
+  var level = document.getElementById('muDeckLevel');
+  var zen = document.getElementById('muDeckZen');
+  if (!snapshot || snapshot.status !== 1) {
+    if (snapshotConnection) snapshotConnection.textContent = 'Character data unavailable';
+  } else {
+    if (snapshotConnection) snapshotConnection.textContent = 'Live local GameServer snapshot · read-only';
+    if (character) character.textContent = snapshot.name || 'Unnamed character';
+    if (level) level.textContent = 'Level ' + snapshot.level + ' · Reset ' + snapshot.reset;
+    if (zen) zen.textContent = String(snapshot.money);
+  }
   } else if (msg.type === 'PLAYER_DISCONNECTED') {
   console.log('[SoloBridge] Player session disconnected on server');
   var disconnectedDeckConnection = document.getElementById('muDeckConnection');

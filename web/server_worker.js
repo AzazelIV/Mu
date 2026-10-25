@@ -2,7 +2,7 @@
 const workerParams = (typeof self !== 'undefined' && self.location && self.location.search) 
     ? new URLSearchParams(self.location.search) 
     : new URLSearchParams('');
-const WORKER_VERSION = workerParams.get('v') || 'login103';
+const WORKER_VERSION = workerParams.get('v') || 'login105';
 
 importScripts(`muserver.js?v=${WORKER_VERSION}`);
 
@@ -12,6 +12,34 @@ let lastTickTime = performance.now();
 
 function log(msg, color = '#60a5fa') {
     self.postMessage({ type: 'LOG', message: msg, color: color });
+}
+
+function readActivePlayerSnapshot() {
+    if (!Module || typeof Module._SoloServer_GetActivePlayerSnapshot !== 'function') return null;
+    const size = 52;
+    const ptr = Module._malloc(size);
+    try {
+        const status = Module._SoloServer_GetActivePlayerSnapshot(ptr, size);
+        const view = new DataView(Module.HEAPU8.buffer, ptr, size);
+        const nameBytes = Module.HEAPU8.slice(ptr + 36, ptr + 47);
+        let end = 0;
+        while (end < nameBytes.length && nameBytes[end] !== 0) end++;
+        const decoder = new TextDecoder();
+        return {
+            schema: view.getInt32(0, true),
+            status: status,
+            playerIndex: view.getInt32(8, true),
+            level: view.getInt32(12, true),
+            experience: view.getUint32(16, true),
+            nextExperience: view.getUint32(20, true),
+            money: view.getUint32(24, true),
+            reset: view.getInt32(28, true),
+            grandReset: view.getInt32(32, true),
+            name: decoder.decode(nameBytes.subarray(0, end))
+        };
+    } finally {
+        Module._free(ptr);
+    }
 }
 
 // ============================================================================
@@ -445,6 +473,7 @@ self.onmessage = async function (e) {
                 monsters: Module._SoloServer_GetMonsterCount(),
                 players: Module._SoloServer_GetPlayerCount()
             });
+            self.postMessage({ type: 'PLAYER_SNAPSHOT', snapshot: readActivePlayerSnapshot() });
             break;
         }
 
@@ -514,6 +543,11 @@ self.onmessage = async function (e) {
                 type: 'SAVES_IMPORTED',
                 count: count
             });
+            break;
+        }
+
+        case 'GET_PLAYER_SNAPSHOT': {
+            self.postMessage({ type: 'PLAYER_SNAPSHOT', snapshot: readActivePlayerSnapshot() });
             break;
         }
 

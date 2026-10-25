@@ -37,6 +37,10 @@ SOLO_API void SoloServer_SetSaveCallback(void (*callback)());
 SOLO_API int  SoloServer_GetPlayerCount();
 SOLO_API int  SoloServer_GetMonsterCount();
 
+// Read-only fixed-layout snapshot. Returns status: 0 unavailable, 1 valid, 2 invalid state.
+// Buffer layout: schema/status/playerIndex/level (int32), experience/nextExperience/money (uint32), reset/grandReset (int32), name[11].
+SOLO_API int  SoloServer_GetActivePlayerSnapshot(void* buffer, int bufferSize);
+
 // Immediately flush in-memory state (inventory, character stats, warehouse) for all active players to disk
 SOLO_API int  SoloServer_SaveAll();
 

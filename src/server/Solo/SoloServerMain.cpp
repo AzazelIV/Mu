@@ -273,6 +273,59 @@ SOLO_API int SoloServer_GetMonsterCount()
 	return gObjTotalMonster;
 }
 
+SOLO_API int SoloServer_GetActivePlayerSnapshot(void* buffer, int bufferSize)
+{
+	struct Snapshot
+	{
+		int32_t schema;
+		int32_t status;
+		int32_t playerIndex;
+		int32_t level;
+		uint32_t experience;
+		uint32_t nextExperience;
+		uint32_t money;
+		int32_t reset;
+		int32_t grandReset;
+		char name[11];
+	};
+
+	if (!buffer || bufferSize < (int)sizeof(Snapshot))
+	{
+		return 0;
+	}
+
+	Snapshot snapshot{};
+	snapshot.schema = 1;
+	snapshot.status = 0;
+	snapshot.playerIndex = -1;
+	const int playerIndex = SoloTransport_GetPlayerIndex();
+	if (playerIndex < 0 || !OBJECT_USER_RANGE(playerIndex) || gObj[playerIndex].Connected == OBJECT_OFFLINE)
+	{
+		std::memcpy(buffer, &snapshot, sizeof(snapshot));
+		return 0;
+	}
+
+	LPOBJ player = &gObj[playerIndex];
+	if (player->Type != OBJECT_USER || player->Name[0] == '\\0')
+	{
+		snapshot.status = 2;
+		std::memcpy(buffer, &snapshot, sizeof(snapshot));
+		return 2;
+	}
+
+	snapshot.status = 1;
+	snapshot.playerIndex = playerIndex;
+	snapshot.level = player->Level;
+	snapshot.experience = player->Experience;
+	snapshot.nextExperience = player->NextExperience;
+	snapshot.money = player->Money;
+	snapshot.reset = player->Reset;
+	snapshot.grandReset = player->GrandReset;
+	std::memcpy(snapshot.name, player->Name, sizeof(snapshot.name));
+	std::memcpy(buffer, &snapshot, sizeof(snapshot));
+	return 1;
+}
+
 SOLO_API void SoloServer_SetDifficulty(int mode)
 {
 	SoloDifficulty_Apply((SOLO_DIFFICULTY_MODE)mode);
