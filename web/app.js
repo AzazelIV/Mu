@@ -4,7 +4,7 @@
  * ============================================================================
  */
 
-const BUILD_VERSION = window.BUILD_VERSION = 'login103';
+const BUILD_VERSION = window.BUILD_VERSION = 'login104';
 
 // ── 1. Virtual Touch Controls & On-Screen Keyboard ──────────────────────────
 
@@ -894,6 +894,16 @@ window.muInstallTopBar = function () {
 
   var r = (window.soloBridge && window.soloBridge.getRealm) ? window.soloBridge.getRealm() : 0;
   window.muUpdateRealmBadge(r);
+
+  var deck = document.getElementById('muDeck');
+  var deckButton = document.getElementById('muBtnDeck');
+  if (deck && deckButton && !deck._muDeck) {
+    deck._muDeck = true;
+    function closeDeck() { deck.classList.remove('on'); deck.setAttribute('aria-hidden', 'true'); }
+    deckButton.addEventListener('click', function () { deck.classList.add('on'); deck.setAttribute('aria-hidden', 'false'); });
+    deck.querySelectorAll('[data-deck-close]').forEach(function (el) { el.addEventListener('click', closeDeck); });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && deck.classList.contains('on')) closeDeck(); });
+  }
 };
 
 if (document.readyState === 'loading') {
