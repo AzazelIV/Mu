@@ -15,12 +15,15 @@ function log(msg, color = '#60a5fa') {
 }
 
 function readActivePlayerSnapshot() {
-    if (!Module || typeof Module._SoloServer_GetActivePlayerSnapshot !== 'function') return null;
-    const size = 52;
-    const ptr = Module._malloc(size);
-    try {
-        const status = Module._SoloServer_GetActivePlayerSnapshot(ptr, size);
-        const view = new DataView(Module.HEAPU8.buffer, ptr, size);
+  if (!Module || typeof Module._SoloServer_GetActivePlayerSnapshot !== 'function' ||
+      typeof Module._malloc !== 'function' || !Module.HEAPU8) return null;
+  const size = 52;
+  const ptr = Module._malloc(size);
+  if (!ptr) return null;
+  try {
+    const status = Module._SoloServer_GetActivePlayerSnapshot(ptr, size);
+    if (status !== 0 && status !== 1 && status !== 2) return null;
+    const view = new DataView(Module.HEAPU8.buffer, ptr, size);
         const nameBytes = Module.HEAPU8.slice(ptr + 36, ptr + 47);
         let end = 0;
         while (end < nameBytes.length && nameBytes[end] !== 0) end++;
