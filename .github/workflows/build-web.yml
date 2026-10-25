@@ -99,11 +99,3 @@ jobs:
           path: mu-online-web-build.zip
           if-no-files-found: error
           retention-days: 14
-
-      - name: Upload generated web files for deployment
-        uses: actions/upload-artifact@v4
-        with:
-          name: mu-online-web-pages
-          path: web/
-          if-no-files-found: error
-          retention-days: 14
