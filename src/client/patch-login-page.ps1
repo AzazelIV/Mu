@@ -337,6 +337,21 @@ $jsContent = [IO.File]::ReadAllText($js)
 $jsCleaned = [regex]::Replace($jsContent, '(?m)^\s*//\s*(?:end\s+)?include:\s*(?:[A-Za-z]:[\\/]|/).*\r?\n?', '')
 [IO.File]::WriteAllText($js, $jsCleaned, (New-Object System.Text.UTF8Encoding $false))
 
+# Normalize Emscripten's generated data-package identifier. Absolute build paths must
+# never leak into the browser runtime or its run-dependency key.
+$jsContent = [IO.File]::ReadAllText($js)
+$jsContent = [regex]::Replace(
+    $jsContent,
+    "var PACKAGE_NAME = ['""]([^'""]*[\\/])?shell_login\\.data['""];",
+    "var PACKAGE_NAME = 'shell_login.data';"
+)
+$jsContent = [regex]::Replace(
+    $jsContent,
+    "datafile_[^'""]*shell_login\\.data",
+    "datafile_shell_login.data"
+)
+[IO.File]::WriteAllText($js, $jsContent, (New-Object System.Text.UTF8Encoding $false))
+
 Write-Output "PATCH_OK $Token"
 
 
