@@ -420,10 +420,14 @@ window.muInstallAudio = function () {
             if (window.muShowToast) window.muShowToast("Failed to export save file.");
           }
         }
-      } else if (msg.type === 'PLAYER_CONNECTED') {
-        console.log('[SoloBridge] Player connected to GameServer session:', msg.playerIndex);
-      } else if (msg.type === 'PLAYER_DISCONNECTED') {
-        console.log('[SoloBridge] Player session disconnected on server');
+  } else if (msg.type === 'PLAYER_CONNECTED') {
+  console.log('[SoloBridge] Player connected to GameServer session:', msg.playerIndex);
+  var deckConnection = document.getElementById('muDeckConnection');
+  if (deckConnection) deckConnection.textContent = 'Game session connected · character data remains server-authoritative';
+  } else if (msg.type === 'PLAYER_DISCONNECTED') {
+  console.log('[SoloBridge] Player session disconnected on server');
+  var disconnectedDeckConnection = document.getElementById('muDeckConnection');
+  if (disconnectedDeckConnection) disconnectedDeckConnection.textContent = 'Local game session · bridge disconnected';
         if (typeof Module !== 'undefined' && Module._mu_net_push_disconnect) {
           Module._mu_net_push_disconnect();
         }
@@ -899,8 +903,23 @@ window.muInstallTopBar = function () {
   var deckButton = document.getElementById('muBtnDeck');
   if (deck && deckButton && !deck._muDeck) {
     deck._muDeck = true;
-    function closeDeck() { deck.classList.remove('on'); deck.setAttribute('aria-hidden', 'true'); }
-    deckButton.addEventListener('click', function () { deck.classList.add('on'); deck.setAttribute('aria-hidden', 'false'); });
+    function closeDeck() {
+      deck.classList.remove('on');
+      deck.setAttribute('aria-hidden', 'true');
+      deckButton.setAttribute('aria-expanded', 'false');
+      deckButton.focus();
+    }
+    deckButton.setAttribute('aria-expanded', 'false');
+    deckButton.addEventListener('click', function () {
+      var isOpen = !deck.classList.contains('on');
+      deck.classList.toggle('on', isOpen);
+      deck.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+      deckButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (isOpen) {
+        var close = deck.querySelector('[data-deck-close]');
+        if (close) close.focus();
+      }
+    });
     deck.querySelectorAll('[data-deck-close]').forEach(function (el) { el.addEventListener('click', closeDeck); });
     document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && deck.classList.contains('on')) closeDeck(); });
   }
