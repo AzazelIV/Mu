@@ -4,7 +4,7 @@
  * ============================================================================
  */
 
-const BUILD_VERSION = window.BUILD_VERSION = 'login104';
+const BUILD_VERSION = window.BUILD_VERSION = 'login105';
 
 // ── 1. Virtual Touch Controls & On-Screen Keyboard ──────────────────────────
 
@@ -993,6 +993,27 @@ var Module = {
     }
   },
   locateFile: function (path) { return path + `?t=${BUILD_VERSION}`; },
+  // Surface a clear error instead of leaving the preloader at 0% forever
+  // when Emscripten is waiting for a missing or unreachable asset package.
+  monitorRunDependencies: function (left) {
+    if (left > 0 && !Module._dependencyWatchdog) {
+      Module._dependencyWatchdog = setTimeout(function () {
+        if (typeof Module.runDependencies === 'number' && Module.runDependencies > 0) {
+          var message = 'Game data is still loading. Check that shell_login.data exists in the published web directory and is reachable.';
+          console.error('[MU Client] ' + message, 'Pending dependencies:', Module.runDependencies);
+          if (window.setPreloaderProgress) {
+            window.setPreloaderProgress(0, 'Game data failed to load', 'Check shell_login.data and reload the page.');
+          }
+          var statusMessage = document.getElementById('muStatusMsg');
+          if (statusMessage) statusMessage.textContent = message;
+        }
+        Module._dependencyWatchdog = null;
+      }, 20000);
+    } else if (left === 0 && Module._dependencyWatchdog) {
+      clearTimeout(Module._dependencyWatchdog);
+      Module._dependencyWatchdog = null;
+    }
+  },
   preRun: [function () {
     var orig = FS.lookupPath;
     function child(node, name) {
