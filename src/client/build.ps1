@@ -74,7 +74,7 @@ $CFlags = @("-c", "-std=c11", "-O2", "-ferror-limit=5", "-Wno-deprecated-non-pro
 
 if (Test-Path $SourcesList) {
     $sources = @(Get-Content $SourcesList | Where-Object { $_.Trim() -ne "" })
-    $sources += @("browser/shell_login.cpp", "browser/net_ws.cpp", "browser/mu_mesh_draw.cpp", "browser/mu_gdi.cpp")
+    $sources += @("browser/shell_login.cpp", "browser/net_ws.cpp", "browser/mu_mesh_draw.cpp", "browser/mu_gdi.cpp", "browser/mu_profile.cpp", "browser/mu_runtime.cpp")
     Write-Host "Checking $($sources.Count) source files..." -ForegroundColor Cyan
     $compiled = 0
     foreach ($rel in $sources) {
