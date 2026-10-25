@@ -86,16 +86,24 @@ jobs:
             Write-Host "$path ($($item.Length) bytes)"
           }
 
-      - name: Package playable web build
+      - name: Package web build
         shell: pwsh
         run: |
           Compress-Archive -Path web/* -DestinationPath mu-online-web-build.zip -Force
           Get-Item mu-online-web-build.zip | Format-List Name,Length
 
-      - name: Upload web build artifact
+      - name: Upload package for download
         uses: actions/upload-artifact@v4
         with:
           name: mu-online-web-build
           path: mu-online-web-build.zip
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload generated web files for deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: mu-online-web-pages
+          path: web/
           if-no-files-found: error
           retention-days: 14
