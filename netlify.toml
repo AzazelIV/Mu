@@ -1,0 +1,6 @@
+[build]
+  publish = "web"
+  command = ""
+
+# The site is a prebuilt WebAssembly client. Netlify serves the files in /web;
+# the native/Emscripten build is handled separately by GitHub Actions.
