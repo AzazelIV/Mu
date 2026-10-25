@@ -27,7 +27,6 @@ function Replace-Count([string]$path, [string]$old, [string]$new, [int]$expect) 
 
 Replace-Once $js @"
   var _emscripten_glTexImage2D = (target, level, internalFormat, width, height, border, format, type, pixels) => {
-      if (true) {
 "@ @"
   var muGlFormat = (fmt) => {
       if (fmt == 4) return 0x1908;
@@ -36,8 +35,8 @@ Replace-Once $js @"
   var _emscripten_glTexImage2D = (target, level, internalFormat, width, height, border, format, type, pixels) => {
       internalFormat = muGlFormat(internalFormat);
       format = muGlFormat(format);
-      if (true) {
 "@
+
 
 Replace-Once $js "      GLImmediate.mode = mode;`n      GLImmediate.vertexCounter = 0;" @"
       if (Module._muBatchOpen && !Module._muBatchDrawing && Module._mu_mesh_flush) {
