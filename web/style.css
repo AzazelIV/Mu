@@ -28,6 +28,33 @@ pre {
   white-space: pre-wrap;
 }
 
+/* Cryptomine Space X player deck */
+.mu-btn-deck { border-color: rgba(45, 212, 191, .32); color: #8ff5e4; }
+.mu-btn-deck:hover { background: rgba(45, 212, 191, .12); border-color: rgba(45, 212, 191, .62); }
+.mu-deck { position: fixed; inset: 0; z-index: 180; display: grid; place-items: center; padding: 24px; visibility: hidden; opacity: 0; transition: opacity .2s ease, visibility .2s ease; }
+.mu-deck.on { visibility: visible; opacity: 1; }
+.mu-deck-backdrop { position: absolute; inset: 0; background: rgba(2, 6, 14, .78); backdrop-filter: blur(10px); }
+.mu-deck-dialog { position: relative; width: min(880px, 100%); max-height: min(680px, 92vh); overflow: auto; border: 1px solid rgba(45, 212, 191, .27); background: linear-gradient(145deg, rgba(10, 21, 31, .98), rgba(5, 10, 20, .98)); box-shadow: 0 25px 90px rgba(0,0,0,.65), 0 0 55px rgba(45,212,191,.08); color: #e7f7f5; padding: 26px; }
+.mu-deck-header { display: flex; justify-content: space-between; align-items: start; border-bottom: 1px solid rgba(148,163,184,.16); padding-bottom: 20px; }
+.mu-kicker, .mu-card-label { margin: 0 0 6px; color: #4adecf; font: 700 10px/1.2 'Space Grotesk', sans-serif; letter-spacing: .16em; }
+.mu-deck-header h2 { margin: 0; font: 700 clamp(24px, 4vw, 36px)/1.05 'Space Grotesk', sans-serif; letter-spacing: -.04em; }
+.mu-deck-close { border: 0; background: transparent; color: #94a3b8; cursor: pointer; font-size: 28px; line-height: 1; }
+.mu-deck-status { display: flex; gap: 8px; align-items: center; margin: 18px 0; color: #fbbf24; font-size: 12px; }
+.mu-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #fbbf24; box-shadow: 0 0 10px #fbbf24; }
+.mu-deck-grid { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 10px; }
+.mu-deck-card, .mu-deck-lower > div { border: 1px solid rgba(148,163,184,.14); background: rgba(255,255,255,.035); padding: 18px; min-height: 105px; }
+.mu-deck-card strong { display: block; color: #fff; font: 700 20px 'Space Grotesk', sans-serif; margin-bottom: 8px; }
+.mu-deck-card span:not(.mu-card-label), .mu-deck-card small, .mu-deck-lower p { color: #94a3b8; font-size: 12px; line-height: 1.5; }
+.mu-deck-hero { background: linear-gradient(135deg, rgba(20,184,166,.13), rgba(255,255,255,.035)); }
+.mu-xp-track { height: 5px; background: rgba(148,163,184,.17); margin: 18px 0 9px; }
+.mu-xp-track span { display: block; height: 100%; background: linear-gradient(90deg, #14b8a6, #a7f3d0); }
+.mu-deck-lower { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.mu-deck-lower h3 { margin: 0 0 10px; font: 600 15px 'Space Grotesk', sans-serif; }
+.mu-deck-lower p { margin: 6px 0; } .mu-muted { color: #64748b !important; } .mu-deck-lower a { color: #5eead4; font-size: 12px; }
+@media (max-width: 850px) { .mu-deck-grid { grid-template-columns: 1fr 1fr; } .mu-deck-hero { grid-column: 1 / -1; } }
+@media (max-width: 560px) { .mu-deck { padding: 10px; } .mu-deck-dialog { padding: 18px; } .mu-deck-grid, .mu-deck-lower { grid-template-columns: 1fr; } .mu-deck-hero { grid-column: auto; } }
+
+
 /* === Game Canvas === */
 canvas#canvas {
   background: #000;

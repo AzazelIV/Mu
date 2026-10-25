@@ -62,7 +62,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=login103">
+    <link rel="stylesheet" href="style.css?v=login104">
   </head>
   <body>
     <!-- Fullscreen MU Preloader -->
@@ -194,6 +194,15 @@
           <span class="mu-btn-text" id="muAutoAttackText">Auto</span>
         </button>
 
+        <!-- Cryptomine Player Deck -->
+        <button id="muBtnDeck" class="mu-top-btn mu-btn-deck" type="button" title="Open Cryptomine player deck" aria-label="Open Cryptomine player deck">
+          <svg class="mu-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7.5 12 3l9 4.5-9 4.5-9-4.5Z"></path>
+            <path d="M3 12.5 12 17l9-4.5M3 17.5 12 22l9-4.5"></path>
+          </svg>
+          <span class="mu-btn-text">Deck</span>
+        </button>
+
         <!-- Game Guide & Info Button -->
         <button id="muBtnInfo" class="mu-top-btn" type="button" title="Game Guide & Instructions (Controls, Commands, Server Rates)" aria-label="Game Guide">
           <svg class="mu-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -241,6 +250,31 @@
 
     <!-- Floating Toast Notification -->
     <div id="muToast" class="mu-toast" role="status" aria-live="polite"></div>
+
+    <!-- Cryptomine Player Deck -->
+    <section id="muDeck" class="mu-deck" aria-hidden="true" aria-labelledby="muDeckTitle">
+      <div class="mu-deck-backdrop" data-deck-close></div>
+      <div class="mu-deck-dialog" role="dialog" aria-modal="true">
+        <header class="mu-deck-header">
+          <div>
+            <p class="mu-kicker">CRYPTOMINE SPACE X</p>
+            <h2 id="muDeckTitle">Player command deck</h2>
+          </div>
+          <button class="mu-deck-close" type="button" aria-label="Close player deck" data-deck-close>×</button>
+        </header>
+        <div class="mu-deck-status"><span class="mu-status-dot"></span><span id="muDeckConnection">Local game session · bridge waiting</span></div>
+        <div class="mu-deck-grid">
+          <article class="mu-deck-card mu-deck-hero"><span class="mu-card-label">MAIN CHARACTER</span><strong id="muDeckCharacter">Awaiting character data</strong><span id="muDeckClass">The game client has not exposed a character profile yet.</span><div class="mu-xp-track"><span id="muDeckXp" style="width:0%"></span></div><small id="muDeckLevel">Level — · Reset progress unavailable</small></article>
+          <article class="mu-deck-card"><span class="mu-card-label">INTERNAL ZEN</span><strong id="muDeckZen">—</strong><span>Server-authoritative balance</span></article>
+          <article class="mu-deck-card"><span class="mu-card-label">ZEN TOKEN</span><strong id="muDeckToken">Not connected</strong><span>BNB Smart Chain Testnet · chain 97</span></article>
+          <article class="mu-deck-card"><span class="mu-card-label">INVENTORY</span><strong id="muDeckInventory">—</strong><span>Persistent items will appear when the bridge is connected.</span></article>
+        </div>
+        <div class="mu-deck-lower">
+          <div><h3>Progression</h3><p>Reset requirement <b>Level 400</b></p><p class="mu-muted">No reset action is enabled in the solo client until a server endpoint validates the character state.</p></div>
+          <div><h3>Blockchain rail</h3><p class="mu-muted">Contract verification and deposits require a backend watcher. No wallet or withdrawal action is presented until signing and confirmation services are configured.</p><a href="https://testnet.bscscan.com/address/0x5Ea334a1F91818F5B9Ac6F6DE69c075DdA47193B" target="_blank" rel="noopener noreferrer">View configured contract ↗</a></div>
+        </div>
+      </div>
+    </section>
 
     <!-- Game Guide & Info Modal Popup -->
     <div id="muInfoModal" class="mu-modal" aria-hidden="true">
@@ -707,15 +741,15 @@
     </div>
 
     <!-- Unthrottled Background Worker Timer (AFK Progression Support) -->
-    <script src="bg_timer.js?v=login103"></script>
+    <script src="bg_timer.js?v=login104"></script>
 
     <!-- Preloader Lifecycle & Dynamic Particles -->
-    <script src="preloader.js?v=login103"></script>
+    <script src="preloader.js?v=login104"></script>
 
     <!-- Application Controller & Client/Server Worker Bridge -->
-    <script src="app.js?v=login103"></script>
+    <script src="app.js?v=login104"></script>
 
     <!-- WebGL2 WebAssembly Game Client Core -->
-    <script async type="text/javascript" src="shell_login.js?t=login103"></script>
+    <script async type="text/javascript" src="shell_login.js?t=login104"></script>
   </body>
 </html>
