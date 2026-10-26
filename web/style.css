@@ -55,6 +55,122 @@ pre {
 @media (max-width: 560px) { .mu-deck { padding: 10px; } .mu-deck-dialog { padding: 18px; } .mu-deck-grid, .mu-deck-lower { grid-template-columns: 1fr; } .mu-deck-hero { grid-column: auto; } }
 
 
+/* === ViltrumiraTest VLT Wallet — phase 1 === */
+.mu-btn-vlt {
+  border-color: rgba(167, 139, 250, .4);
+  color: #ddd6fe;
+  background: rgba(139, 92, 246, .08);
+}
+.mu-btn-vlt:hover {
+  border-color: rgba(167, 139, 250, .75);
+  background: rgba(139, 92, 246, .16);
+}
+.vlt-wallet-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .18s ease, visibility .18s ease;
+}
+.vlt-wallet-modal.on { visibility: visible; opacity: 1; }
+.vlt-wallet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 4, 12, .82);
+  backdrop-filter: blur(9px);
+}
+.vlt-wallet-dialog {
+  position: relative;
+  width: min(520px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  padding: 24px;
+  color: #f5f3ff;
+  background: linear-gradient(145deg, #111323, #090b15);
+  border: 1px solid rgba(167, 139, 250, .35);
+  box-shadow: 0 24px 90px rgba(0,0,0,.65), 0 0 45px rgba(139,92,246,.1);
+}
+.vlt-wallet-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,.09);
+}
+.vlt-wallet-header h2 {
+  margin: 0;
+  font: 700 26px/1.15 'Space Grotesk', sans-serif;
+}
+.vlt-wallet-header h2 span { color: #c4b5fd; }
+.vlt-wallet-subtitle { margin: 8px 0 0; color: #9ca3b8; font-size: 13px; line-height: 1.5; }
+.vlt-wallet-network {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 17px 0;
+  color: #c4b5fd;
+  font-size: 12px;
+}
+.vlt-wallet-balance-card, .vlt-wallet-account {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.09);
+}
+.vlt-wallet-balance-card strong {
+  font: 700 clamp(28px, 7vw, 38px)/1.1 'Space Grotesk', sans-serif;
+  overflow-wrap: anywhere;
+}
+.vlt-wallet-balance-card > span:last-child { color: #9ca3b8; font-size: 12px; }
+.vlt-wallet-account { margin-top: 10px; }
+.vlt-wallet-account strong { font-size: 13px; overflow-wrap: anywhere; }
+.vlt-wallet-status {
+  min-height: 36px;
+  margin: 14px 0;
+  color: #a5b4fc;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.vlt-wallet-status[data-kind="success"] { color: #86efac; }
+.vlt-wallet-status[data-kind="error"] { color: #fca5a5; }
+.vlt-wallet-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.vlt-primary-button, .vlt-secondary-button {
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid rgba(167,139,250,.45);
+  cursor: pointer;
+  font: 600 13px 'Outfit', sans-serif;
+}
+.vlt-primary-button { color: #100b20; background: #c4b5fd; }
+.vlt-primary-button:hover { background: #ddd6fe; }
+.vlt-secondary-button { color: #e5e7eb; background: rgba(255,255,255,.05); }
+.vlt-secondary-button:hover { background: rgba(255,255,255,.1); }
+.vlt-wallet-next-steps {
+  margin-top: 18px;
+  padding: 15px;
+  border-left: 2px solid #8b5cf6;
+  background: rgba(139,92,246,.07);
+}
+.vlt-wallet-next-steps h3 { margin: 0 0 6px; font-size: 13px; }
+.vlt-wallet-next-steps p, .vlt-wallet-contract { margin: 0; color: #9ca3b8; font-size: 12px; line-height: 1.6; }
+.vlt-wallet-contract { margin-top: 14px; }
+.vlt-wallet-contract a { color: #c4b5fd; text-decoration: none; }
+.vlt-wallet-contract a:hover { text-decoration: underline; }
+@media (max-width: 560px) {
+  .vlt-wallet-modal { padding: 10px; }
+  .vlt-wallet-dialog { padding: 18px; }
+  .vlt-wallet-actions { grid-template-columns: 1fr; }
+  .mu-btn-vlt .mu-btn-text { font-size: 10px; }
+}
+
 /* === Game Canvas === */
 canvas#canvas {
   background: #000;
