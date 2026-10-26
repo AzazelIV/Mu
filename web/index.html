@@ -203,6 +203,11 @@
           <span class="mu-btn-text">Deck</span>
         </button>
 
+        <!-- ViltrumiraTest VLT wallet -->
+        <button id="muBtnVltWallet" class="mu-top-btn mu-btn-vlt" type="button" title="Connect MetaMask and view VLT balance" aria-label="VLT Wallet">
+          <span class="mu-btn-text">VLT Wallet</span>
+        </button>
+
         <!-- Game Guide & Info Button -->
         <button id="muBtnInfo" class="mu-top-btn" type="button" title="Game Guide & Instructions (Controls, Commands, Server Rates)" aria-label="Game Guide">
           <svg class="mu-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -273,6 +278,41 @@
           <div><h3>Progression</h3><p>Reset requirement <b>Level 400</b></p><p class="mu-muted">No reset action is enabled in the solo client until a server endpoint validates the character state.</p></div>
           <div><h3>Blockchain rail</h3><p class="mu-muted">Contract verification and deposits require a backend watcher. No wallet or withdrawal action is presented until signing and confirmation services are configured.</p><a href="https://testnet.bscscan.com/address/0x5Ea334a1F91818F5B9Ac6F6DE69c075DdA47193B" target="_blank" rel="noopener noreferrer">View configured contract ↗</a></div>
         </div>
+      </div>
+    </section>
+
+    <!-- ViltrumiraTest VLT Wallet Modal (phase 1: connection and read-only balance) -->
+    <section id="vltWalletModal" class="vlt-wallet-modal" aria-hidden="true" aria-label="VLT wallet">
+      <div id="vltWalletBackdrop" class="vlt-wallet-backdrop"></div>
+      <div class="vlt-wallet-dialog" role="dialog" aria-modal="true" aria-labelledby="vltWalletTitle">
+        <header class="vlt-wallet-header">
+          <div>
+            <p class="mu-kicker">BNB SMART CHAIN TESTNET</p>
+            <h2 id="vltWalletTitle">ViltrumiraTest <span>VLT</span></h2>
+            <p class="vlt-wallet-subtitle">Connect MetaMask to view your on-chain token balance.</p>
+          </div>
+          <button id="vltWalletClose" class="mu-deck-close" type="button" aria-label="Close VLT wallet">×</button>
+        </header>
+        <div class="vlt-wallet-network"><span class="mu-status-dot"></span><span>Testnet only · Chain ID 97</span></div>
+        <div class="vlt-wallet-balance-card">
+          <span class="mu-card-label">YOUR VLT BALANCE</span>
+          <strong id="vltWalletBalance">—</strong>
+          <span>VLT · 18 decimals</span>
+        </div>
+        <div class="vlt-wallet-account">
+          <span class="mu-card-label">CONNECTED WALLET</span>
+          <strong id="vltWalletAddress">No wallet connected</strong>
+        </div>
+        <p id="vltWalletStatus" class="vlt-wallet-status" role="status" aria-live="polite">Connect MetaMask to begin. This first phase only reads on-chain data.</p>
+        <div class="vlt-wallet-actions">
+          <button id="vltConnectButton" class="vlt-primary-button" type="button">Connect MetaMask</button>
+          <button id="vltRefreshBalance" class="vlt-secondary-button" type="button">Refresh balance</button>
+        </div>
+        <div class="vlt-wallet-next-steps">
+          <h3>Payments and rewards</h3>
+          <p>Coming in later phases. Transfers and game rewards stay disabled until a secure server can verify transactions and prevent duplicate credits.</p>
+        </div>
+        <p class="vlt-wallet-contract">Contract: <a href="https://testnet.bscscan.com/address/0x5Ea334a1F91818F5B9Ac6F6DE69c075DdA47193B" target="_blank" rel="noopener noreferrer">View VLT contract ↗</a></p>
       </div>
     </section>
 
@@ -748,6 +788,9 @@
 
     <!-- Application Controller & Client/Server Worker Bridge -->
     <script src="app.js?v=login105"></script>
+
+    <!-- VLT MetaMask bridge (read-only first phase) -->
+    <script src="vlt-wallet.js?v=phase1"></script>
 
     <!-- WebGL2 WebAssembly Game Client Core -->
     <script async type="text/javascript" src="shell_login.js?t=login105"></script>
